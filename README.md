@@ -2,6 +2,10 @@
 
 This is a version of Roblox from 2016 with its source code fixed. The base used is from git.rip, from https://git.rip/exconfidential/roblox/roblox.
 
+## Warning(s)
+
+### From now, im going to accept pull requests to fixes/PRs
+
 ## Build
 
 You will need the following to compile, for Windows:
