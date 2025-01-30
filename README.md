@@ -5,6 +5,7 @@ This is a version of Roblox from 2016 with its source code fixed. The base used 
 ## Warning(s)
 
 ### From now, im going to accept pull requests to fixes/PRs
+### In case building dont work/Theres any error with images (.png, .svg, etc.), make an `Issue` and i will revert `[ImgBot] Optimize images`
 
 ## Build
 
