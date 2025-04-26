@@ -2,6 +2,9 @@
 
 This is a version of Roblox from 2016 with its source code fixed. The base used is from git.rip, from https://git.rip/exconfidential/roblox/roblox.
 
+[![Star History Chart](https://api.star-history.com/svg?repos=PatoFlamejanteTV/ROBLOX&type=Date)](https://star-history.com/#bytebase/star-history&Date)
+
+
 ## Warning(s)
 
 ### From now, im going to accept pull requests to fixes/PRs
