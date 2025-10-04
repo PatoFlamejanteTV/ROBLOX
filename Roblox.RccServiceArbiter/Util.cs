@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Net;
 using System.IO;
+using System.Net;
 using System.Xml;
 
 namespace Roblox.RccServiceArbiter
@@ -15,7 +14,7 @@ namespace Roblox.RccServiceArbiter
             string host = uriBuild.Host;
             host = host.Replace("www.", "");
 
-            return String.Format("https://clientsettings.api.{0}/Setting/QuietGet/{1}/?apiKey=D6925E56-BFB9-4908-AAA2-A5B1EC4B2D79", host, group);;
+            return String.Format("https://clientsettings.api.{0}/Setting/QuietGet/{1}/?apiKey=D6925E56-BFB9-4908-AAA2-A5B1EC4B2D79", host, group); ;
         }
 
         static public string Fetch(string group)
@@ -32,9 +31,9 @@ namespace Roblox.RccServiceArbiter
             try
             {
                 string url = BuildSettingsUrl(baseUrl, group);
-                
+
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                
+
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 if (response.ContentLength > 0)
                 {

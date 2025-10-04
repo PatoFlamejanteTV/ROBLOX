@@ -353,6 +353,51 @@
     <ClCompile Include="g3dcpp\Crypto.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Library\zlib\include\zlib\adler32.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Library\zlib\include\zlib\compress.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Library\zlib\include\zlib\crc32.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Library\zlib\include\zlib\deflate.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Library\zlib\include\zlib\gzclose.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Library\zlib\include\zlib\gzlib.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Library\zlib\include\zlib\gzread.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Library\zlib\include\zlib\gzwrite.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Library\zlib\include\zlib\infback.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Library\zlib\include\zlib\inffast.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Library\zlib\include\zlib\inflate.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Library\zlib\include\zlib\inftrees.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Library\zlib\include\zlib\trees.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Library\zlib\include\zlib\uncompr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Library\zlib\include\zlib\zutil.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\G3D\AABox.h">
@@ -398,9 +443,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\G3D\Cone.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="zip\config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\g3d\constants.h">
@@ -614,6 +656,9 @@
       <Filter>IJG</Filter>
     </ClInclude>
     <ClInclude Include="include\g3d\PhysicsFrame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Library\zlib\include\zlib\zconf.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

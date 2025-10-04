@@ -22,19 +22,19 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140_xp</PlatformToolset>
+    <PlatformToolset>v141_xp</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='NoOpt|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140_xp</PlatformToolset>
+    <PlatformToolset>v141_xp</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140_xp</PlatformToolset>
+    <PlatformToolset>v141_xp</PlatformToolset>
     <WholeProgramOptimization>false</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -84,7 +84,7 @@
       <AdditionalDependencies>SDL2.lib;qtmaind.lib;QtGuid4.lib;QtCored4.lib;QtNetworkd4.lib;QtXmld4.lib;QtWebKitd4.lib;gdi32.lib;comdlg32.lib;oleaut32.lib;imm32.lib;winmm.lib;winspool.lib;ws2_32.lib;ole32.lib;user32.lib;advapi32.lib;msimg32.lib;shell32.lib;kernel32.lib;uuid.lib;wmvcore.lib;strmbase.lib;qtnribbon3.lib;..\CSG\sgCore\sgCore.lib;zlibd.lib;libcurl-d.lib;fmod_vc.lib;legacy_stdio_definitions.lib;WS2_32.lib;Crypt32.lib;Wldap32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
-	  <ForceFileOutput>Enabled</ForceFileOutput>
+      <ForceFileOutput>Enabled</ForceFileOutput>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='NoOpt|Win32'">
@@ -107,7 +107,7 @@
       <AdditionalDependencies>SDL2.lib;qtmaind.lib;QtGuid4.lib;QtCored4.lib;QtNetworkd4.lib;QtXmld4.lib;QtWebKitd4.lib;gdi32.lib;comdlg32.lib;oleaut32.lib;imm32.lib;winmm.lib;winspool.lib;ws2_32.lib;ole32.lib;user32.lib;advapi32.lib;msimg32.lib;shell32.lib;kernel32.lib;uuid.lib;wmvcore.lib;strmbase.lib;qtnribbon3.lib;..\CSG\sgCore\sgCore.lib;zlibd.lib;libcurl-d.lib;fmod_vc.lib;legacy_stdio_definitions.lib;WS2_32.lib;Crypt32.lib;Wldap32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
-	  <ForceFileOutput>Enabled</ForceFileOutput>
+      <ForceFileOutput>Enabled</ForceFileOutput>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -136,7 +136,7 @@
       <AdditionalDependencies>SDL2.lib;qtmaind.lib;QtGuid4.lib;QtCored4.lib;QtNetworkd4.lib;QtXmld4.lib;QtWebKitd4.lib;gdi32.lib;comdlg32.lib;oleaut32.lib;imm32.lib;winmm.lib;winspool.lib;ws2_32.lib;ole32.lib;user32.lib;advapi32.lib;msimg32.lib;shell32.lib;kernel32.lib;uuid.lib;wmvcore.lib;strmbase.lib;qtnribbon3.lib;..\CSG\sgCore\sgCore.lib;zlibd.lib;libcurl-d.lib;fmod_vc.lib;legacy_stdio_definitions.lib;WS2_32.lib;Crypt32.lib;Wldap32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
-	  <ForceFileOutput>Enabled</ForceFileOutput>
+      <ForceFileOutput>Enabled</ForceFileOutput>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

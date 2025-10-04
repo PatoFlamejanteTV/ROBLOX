@@ -149,18 +149,10 @@
     <None Include="Roblox.inf">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="cabsdk\BIN\CABARC.EXE">
-      <Filter>cabsdk</Filter>
-    </None>
-    <None Include="cabsdk\BIN\CABINET.DLL">
-      <Filter>cabsdk</Filter>
-    </None>
-    <None Include="cabsdk\BIN\EXTRACT.EXE">
-      <Filter>cabsdk</Filter>
-    </None>
-    <None Include="cabsdk\BIN\MAKECAB.EXE">
-      <Filter>cabsdk</Filter>
-    </None>
+    <None Include="..\..\Library\cabsdk\BIN\CABARC.EXE" />
+    <None Include="..\..\Library\cabsdk\BIN\CABINET.DLL" />
+    <None Include="..\..\Library\cabsdk\BIN\EXTRACT.EXE" />
+    <None Include="..\..\Library\cabsdk\BIN\MAKECAB.EXE" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bootstrapper.h">

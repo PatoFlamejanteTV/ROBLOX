@@ -29,25 +29,25 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='NoOpt|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v140_xp</PlatformToolset>
+    <PlatformToolset>v141_xp</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v140_xp</PlatformToolset>
+    <PlatformToolset>v141_xp</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v140_xp</PlatformToolset>
+    <PlatformToolset>v141_xp</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>false</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseTest|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v140_xp</PlatformToolset>
+    <PlatformToolset>v141_xp</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
@@ -139,7 +139,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <TargetMachine>MachineX86</TargetMachine>
-	  <ForceFileOutput>Enabled</ForceFileOutput>
+      <ForceFileOutput>Enabled</ForceFileOutput>
     </Link>
     <PostBuildEvent>
       <Message>Copy Plugins</Message>
@@ -201,7 +201,7 @@ xcopy /E /Y "$(SolutionDir)BuiltInPlugins" "$(ProjectDir)$(OutDir)BuiltInPlugins
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <TargetMachine>MachineX86</TargetMachine>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
-	  <ForceFileOutput>Enabled</ForceFileOutput>
+      <ForceFileOutput>Enabled</ForceFileOutput>
     </Link>
     <PostBuildEvent>
       <Message>Copy Plugins</Message>
@@ -250,9 +250,9 @@ xcopy /E /Y "$(SolutionDir)BuiltInPlugins" "$(ProjectDir)$(OutDir)BuiltInPlugins
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences />
       <EnableCOMDATFolding />
-	  <TargetMachine>MachineX86</TargetMachine>
-	  <LargeAddressAware>true</LargeAddressAware>
-	  <ForceFileOutput>Enabled</ForceFileOutput>
+      <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
+      <ForceFileOutput>Enabled</ForceFileOutput>
     </Link>
     <PostBuildEvent>
       <Message>Copy Plugins</Message>
@@ -309,7 +309,7 @@ xcopy /E /Y "$(SolutionDir)BuiltInPlugins" "$(ProjectDir)$(OutDir)BuiltInPlugins
       <LinkTimeCodeGeneration>
       </LinkTimeCodeGeneration>
       <TargetMachine>MachineX86</TargetMachine>
-	  <ForceFileOutput>Enabled</ForceFileOutput>
+      <ForceFileOutput>Enabled</ForceFileOutput>
     </Link>
     <PostBuildEvent>
       <Message>Copy Plugins</Message>
@@ -696,7 +696,7 @@ xcopy /E /Y "$(SolutionDir)BuiltInPlugins" "$(ProjectDir)$(OutDir)BuiltInPlugins
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='NoOpt|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseTest|Win32'">true</ExcludedFromBuild>
-	  <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
     </PublishDLLDependency>
     <PublishDLLDependency Include="..\openssl\libeay32.dll" />
     <PublishDLLDependency Include="..\openssl\libssl32.dll" />
@@ -705,73 +705,73 @@ xcopy /E /Y "$(SolutionDir)BuiltInPlugins" "$(ProjectDir)$(OutDir)BuiltInPlugins
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='NoOpt|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseTest|Win32'">true</ExcludedFromBuild>
-	  <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
     </PublishDLLDependency>
     <PublishDLLDependency Include="..\Library\Qt\bin\phonond4.pdb">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='NoOpt|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseTest|Win32'">true</ExcludedFromBuild>
-	  <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
     </PublishDLLDependency>
     <PublishDLLDependency Include="..\Library\Qt\bin\QtCored4.dll">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='NoOpt|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseTest|Win32'">true</ExcludedFromBuild>
-	  <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
     </PublishDLLDependency>
     <PublishDLLDependency Include="..\Library\Qt\bin\QtCored4.pdb">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='NoOpt|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseTest|Win32'">true</ExcludedFromBuild>
-	  <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
     </PublishDLLDependency>
     <PublishDLLDependency Include="..\Library\Qt\bin\QtGuid4.dll">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='NoOpt|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseTest|Win32'">true</ExcludedFromBuild>
-	  <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
     </PublishDLLDependency>
     <PublishDLLDependency Include="..\Library\Qt\bin\QtGuid4.pdb">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='NoOpt|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseTest|Win32'">true</ExcludedFromBuild>
-	  <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
     </PublishDLLDependency>
     <PublishDLLDependency Include="..\Library\Qt\bin\QtNetworkd4.dll">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='NoOpt|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseTest|Win32'">true</ExcludedFromBuild>
-	  <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
     </PublishDLLDependency>
     <PublishDLLDependency Include="..\Library\Qt\bin\QtNetworkd4.pdb">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='NoOpt|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseTest|Win32'">true</ExcludedFromBuild>
-	  <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
     </PublishDLLDependency>
     <PublishDLLDependency Include="..\Library\Qt\bin\QtWebKitd4.dll">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='NoOpt|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseTest|Win32'">true</ExcludedFromBuild>
-	  <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
     </PublishDLLDependency>
     <PublishDLLDependency Include="..\Library\Qt\bin\QtWebKitd4.pdb">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='NoOpt|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseTest|Win32'">true</ExcludedFromBuild>
-	  <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
     </PublishDLLDependency>
     <PublishDLLDependency Include="..\Library\Qt\bin\QtXmld4.dll">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='NoOpt|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseTest|Win32'">true</ExcludedFromBuild>
-	  <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
     </PublishDLLDependency>
     <PublishDLLDependency Include="..\Library\Qt\bin\QtXmld4.pdb">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='NoOpt|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseTest|Win32'">true</ExcludedFromBuild>
-	  <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
     </PublishDLLDependency>
     <PublishDLLDependency Include="..\Library\Qt\bin\phonon4.dll">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Diagnostics;
-using Roblox.Grid.Arbiter.Common;
 
 namespace Roblox.RccServiceArbiter
 {
@@ -43,12 +41,12 @@ namespace Roblox.RccServiceArbiter
             internal RccServiceProcess(int port)
             {
                 this.port = port;
-                this.process = new Process();
+                process = new Process();
             }
 
             internal void Start(string exe)
             {
-                process.StartInfo = new ProcessStartInfo(exe, String.Format(RCCServiceArgs, Properties.Settings.Default.RccServiceLaunch,port));
+                process.StartInfo = new ProcessStartInfo(exe, String.Format(RCCServiceArgs, Properties.Settings.Default.RccServiceLaunch, port));
                 process.Start();
             }
             internal void StartCrashReporter(string exe)
@@ -97,10 +95,10 @@ namespace Roblox.RccServiceArbiter
         {
             System.Net.ServicePointManager.DefaultConnectionLimit = Properties.Settings.Default.MaxConnections;
 
-            this.multiProcessMode = !Properties.Settings.Default.SingleProcess;
-            this.recycleProcessMode = Properties.Settings.Default.RecycleProcesses;
-            this.recycleJobCount = 4;
-            this.startScript = Properties.Settings.Default.StartScript;
+            multiProcessMode = !Properties.Settings.Default.SingleProcess;
+            recycleProcessMode = Properties.Settings.Default.RecycleProcesses;
+            recycleJobCount = 4;
+            startScript = Properties.Settings.Default.StartScript;
 
             exceptionLock = new System.Threading.ReaderWriterLock();
             exceptionInformation = new Dictionary<string, int>();
@@ -136,7 +134,7 @@ namespace Roblox.RccServiceArbiter
             Console.WriteLine("JobManager::initialize");
 
             newProcessThread = new System.Threading.Thread(
-                delegate()
+                delegate ()
                 {
                     while (true)
                     {
@@ -145,7 +143,8 @@ namespace Roblox.RccServiceArbiter
 
                         lock (recycledProcesses)
                         {
-                            if(recycledProcesses.Count > 0){
+                            if (recycledProcesses.Count > 0)
+                            {
                                 QueueProcess(recycledProcesses.First.Value);
                                 recycledProcesses.RemoveFirst();
                                 continue;
@@ -157,12 +156,12 @@ namespace Roblox.RccServiceArbiter
                         QueueProcess(CreateNewProcess());
                     }
                 });
-            newProcessThread.IsBackground = true; 
+            newProcessThread.IsBackground = true;
             newProcessThread.Start();
             newProcessRequests.Release(1);
 
             expiredJobThread = new System.Threading.Thread(
-                delegate()
+                delegate ()
                 {
                     while (true)
                     {
@@ -174,7 +173,7 @@ namespace Roblox.RccServiceArbiter
             expiredJobThread.Start();
 
             clientSettingsThread = new System.Threading.Thread(
-                delegate()
+                delegate ()
                 {
                     while (true)
                     {
@@ -206,7 +205,7 @@ namespace Roblox.RccServiceArbiter
         }
         ~JobManager()
         {
-            foreach(RccServiceProcess process in readyProcesses)
+            foreach (RccServiceProcess process in readyProcesses)
             {
                 CloseProcess(process);
             }
@@ -237,7 +236,7 @@ namespace Roblox.RccServiceArbiter
 
             // monitor player count and readjust task scheduler thread count
             monitorThread = new System.Threading.Thread(
-                delegate()
+                delegate ()
                 {
                     while (true)
                     {
@@ -253,7 +252,7 @@ namespace Roblox.RccServiceArbiter
                                 {
                                     int maxCount = 0;
                                     using (var rccService = process.SoapInterface)
-                                    {    
+                                    {
                                         Roblox.Grid.Rcc.Job[] jobs = rccService.GetAllJobs();
                                         foreach (Roblox.Grid.Rcc.Job job in jobs)
                                         {
@@ -271,7 +270,7 @@ namespace Roblox.RccServiceArbiter
 
                                     // set thread count based on number of players in game
                                     ConfigureProcess(process, "ConfigThread", CreateThreadConfigScript((maxCount / 100 * Environment.ProcessorCount) + 1));
-                                    
+
                                     set.Add(process);
                                 }
                             }
@@ -350,7 +349,8 @@ namespace Roblox.RccServiceArbiter
             startScript = value;
             if (broadcast)
             {
-                try{
+                try
+                {
                     activeJobsLock.AcquireReaderLock(-1);
 
                     System.Collections.Generic.SynchronizedCollection<RccServiceProcess> set = new SynchronizedCollection<RccServiceProcess>();
@@ -364,8 +364,8 @@ namespace Roblox.RccServiceArbiter
                     }
                 }
                 finally
-                { 
-                    activeJobsLock.ReleaseReaderLock(); 
+                {
+                    activeJobsLock.ReleaseReaderLock();
                 }
             }
         }
@@ -383,14 +383,14 @@ namespace Roblox.RccServiceArbiter
                     string script = CreateThreadConfigScript(value);
 
                     Console.WriteLine("Created " + script);
-                    
+
                     System.Collections.Generic.SynchronizedCollection<RccServiceProcess> set = new SynchronizedCollection<RccServiceProcess>();
                     foreach (RccServiceProcess process in activeJobs.Values)
                     {
                         if (!set.Contains(process) && process.numThreads != value)
                         {
                             ConfigureProcess(process, "SetupThreads", script);
-                            process.numThreads = value; 
+                            process.numThreads = value;
                             set.Add(process);
                         }
                     }
@@ -465,8 +465,8 @@ namespace Roblox.RccServiceArbiter
             stats.AddStat("Setting-RecycleProcess", recycleProcessMode);
             stats.AddStat("Setting-RecycleQueueSize", recycleJobCount);
             stats.AddStat("Setting-RccServicePath", Properties.Settings.Default.RccServicePath);
-            
-            if(clearExceptions)
+
+            if (clearExceptions)
                 exceptionLock.AcquireWriterLock(-1);
             else
                 exceptionLock.AcquireReaderLock(-1);
@@ -499,13 +499,14 @@ namespace Roblox.RccServiceArbiter
         }
         private RccServiceProcess GetSingleProcess()
         {
-            lock(readyProcesses)
+            lock (readyProcesses)
             {
-                if(singleProcess != null && !singleProcess.HasExited)
+                if (singleProcess != null && !singleProcess.HasExited)
                 {
                     return singleProcess;
                 }
-                else{
+                else
+                {
                     singleProcess = null;
                 }
             }
@@ -551,7 +552,7 @@ namespace Roblox.RccServiceArbiter
                 {
                     newProcessRequests.Release(1);
                     newProcessReady.WaitOne();
-                    
+
                     RccServiceProcess result;
                     lock (readyProcesses)
                     {
@@ -750,7 +751,7 @@ namespace Roblox.RccServiceArbiter
         }
         public Roblox.Grid.Rcc.RCCServiceSoap GetJob(string jobId, string task, string extraInfo)
         {
-            string message ="UnknownGetJobError";
+            string message = "UnknownGetJobError";
             activeJobsLock.AcquireReaderLock(-1);
             try
             {
@@ -765,7 +766,7 @@ namespace Roblox.RccServiceArbiter
                         message = RecordException("JobDied");
                         //A crash occurred, we need to spawn a process to deal with this.
                         CreateCrashUploaderProcess();
-                        
+
                         System.Threading.LockCookie cookie = activeJobsLock.UpgradeToWriterLock(-1);
                         try
                         {
@@ -864,7 +865,7 @@ namespace Roblox.RccServiceArbiter
             {
                 if (activeJobs.ContainsKey(jobId))
                 {
-                    
+
                     if (!multiProcessMode)
                     {
                         if (activeJobs[jobId] != singleProcess)

@@ -22,79 +22,75 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(CONTRIB_PATH)\boost_1_56_0\libs\chrono\src\process_cpu_clocks.cpp">
-      <Filter>Source Files\chrono</Filter>
+    <ClCompile Include="..\Library\boost\libs\chrono\src\chrono.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="$(CONTRIB_PATH)\boost_1_56_0\libs\chrono\src\thread_clock.cpp">
-      <Filter>Source Files\chrono</Filter>
+    <ClCompile Include="..\Library\boost\libs\chrono\src\process_cpu_clocks.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="$(CONTRIB_PATH)\boost_1_56_0\libs\chrono\src\chrono.cpp">
-      <Filter>Source Files\chrono</Filter>
+    <ClCompile Include="..\Library\boost\libs\chrono\src\thread_clock.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="$(CONTRIB_PATH)\boost_1_56_0\libs\filesystem\src\portability.cpp">
-      <Filter>Source Files\filesystem</Filter>
+    <ClCompile Include="..\Library\boost\libs\filesystem\src\codecvt_error_category.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="$(CONTRIB_PATH)\boost_1_56_0\libs\filesystem\src\unique_path.cpp">
-      <Filter>Source Files\filesystem</Filter>
+    <ClCompile Include="..\Library\boost\libs\filesystem\src\operations.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="$(CONTRIB_PATH)\boost_1_56_0\libs\filesystem\src\utf8_codecvt_facet.cpp">
-      <Filter>Source Files\filesystem</Filter>
+    <ClCompile Include="..\Library\boost\libs\filesystem\src\path.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="$(CONTRIB_PATH)\boost_1_56_0\libs\filesystem\src\windows_file_codecvt.cpp">
-      <Filter>Source Files\filesystem</Filter>
+    <ClCompile Include="..\Library\boost\libs\filesystem\src\path_traits.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="$(CONTRIB_PATH)\boost_1_56_0\libs\filesystem\src\codecvt_error_category.cpp">
-      <Filter>Source Files\filesystem</Filter>
+    <ClCompile Include="..\Library\boost\libs\filesystem\src\portability.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="$(CONTRIB_PATH)\boost_1_56_0\libs\filesystem\src\operations.cpp">
-      <Filter>Source Files\filesystem</Filter>
+    <ClCompile Include="..\Library\boost\libs\filesystem\src\unique_path.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="$(CONTRIB_PATH)\boost_1_56_0\libs\filesystem\src\path.cpp">
-      <Filter>Source Files\filesystem</Filter>
+    <ClCompile Include="..\Library\boost\libs\filesystem\src\utf8_codecvt_facet.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="$(CONTRIB_PATH)\boost_1_56_0\libs\filesystem\src\path_traits.cpp">
-      <Filter>Source Files\filesystem</Filter>
+    <ClCompile Include="..\Library\boost\libs\filesystem\src\windows_file_codecvt.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="$(CONTRIB_PATH)\boost_1_56_0\libs\iostreams\src\gzip.cpp">
-      <Filter>Source Files\iostreams</Filter>
+    <ClCompile Include="..\Library\boost\libs\iostreams\src\file_descriptor.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="$(CONTRIB_PATH)\boost_1_56_0\libs\iostreams\src\mapped_file.cpp">
-      <Filter>Source Files\iostreams</Filter>
+    <ClCompile Include="..\Library\boost\libs\iostreams\src\gzip.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="$(CONTRIB_PATH)\boost_1_56_0\libs\iostreams\src\zlib.cpp">
-      <Filter>Source Files\iostreams</Filter>
+    <ClCompile Include="..\Library\boost\libs\iostreams\src\mapped_file.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="$(CONTRIB_PATH)\boost_1_56_0\libs\iostreams\src\file_descriptor.cpp">
-      <Filter>Source Files\iostreams</Filter>
+    <ClCompile Include="..\Library\boost\libs\iostreams\src\zlib.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="$(CONTRIB_PATH)\boost_1_56_0\libs\system\src\error_code.cpp">
-      <Filter>Source Files\system</Filter>
+    <ClCompile Include="..\Library\boost\libs\system\src\error_code.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="$(CONTRIB_PATH)\boost_1_56_0\libs\thread\src\win32\tss_pe.cpp">
-      <Filter>Source Files\thread</Filter>
+    <ClCompile Include="..\Library\boost\libs\thread\src\future.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="$(CONTRIB_PATH)\boost_1_56_0\libs\thread\src\win32\thread.cpp">
-      <Filter>Source Files\thread</Filter>
+    <ClCompile Include="..\Library\boost\libs\thread\src\tss_null.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="$(CONTRIB_PATH)\boost_1_56_0\libs\thread\src\win32\tss_dll.cpp">
-      <Filter>Source Files\thread</Filter>
+    <ClCompile Include="..\Library\boost\libs\thread\src\win32\thread.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="$(CONTRIB_PATH)\boost_1_56_0\libs\thread\src\tss_null.cpp">
-      <Filter>Source Files\thread</Filter>
+    <ClCompile Include="..\Library\boost\libs\thread\src\win32\tss_dll.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="$(CONTRIB_PATH)\boost_1_56_0\libs\thread\src\future.cpp">
-      <Filter>Source Files\thread</Filter>
+    <ClCompile Include="..\Library\boost\libs\thread\src\win32\tss_pe.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="$(CONTRIB_PATH)\cpp-netlib-0.11.0-final\libs\network\src\uri\uri.cpp">
+    <ClCompile Include="..\Library\cpp-netlib\libs\network\src\uri\uri.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="$(CONTRIB_PATH)\boost_1_56_0\libs\filesystem\src\windows_file_codecvt.hpp">
-      <Filter>Source Files\filesystem</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\Contrib2\boost_1_56_0\include\boost\thread\win32\thread_primitives.hpp">
-      <Filter>Source Files\thread</Filter>
-    </ClInclude>
+    <ClInclude Include="..\Library\boost\libs\filesystem\src\windows_file_codecvt.hpp" />
+    <ClInclude Include="..\Library\boost\include\boost\thread\win32\thread_primitives.hpp" />
   </ItemGroup>
 </Project>
