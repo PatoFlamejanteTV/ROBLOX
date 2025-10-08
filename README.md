@@ -2,6 +2,9 @@
 
 This is a version of Roblox from 2016 with its source code fixed. The base used is from git.rip, from https://git.rip/exconfidential/roblox/roblox.
 
+[![Dependabot Updates](https://github.com/PatoFlamejanteTV/ROBLOX/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/PatoFlamejanteTV/ROBLOX/actions/workflows/dependabot/dependabot-updates)
+[![CodeQL](https://github.com/PatoFlamejanteTV/ROBLOX/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/PatoFlamejanteTV/ROBLOX/actions/workflows/github-code-scanning/codeql)
+
 [![Star History Chart](https://api.star-history.com/svg?repos=PatoFlamejanteTV/ROBLOX&type=Date)](https://star-history.com/#bytebase/star-history&Date)
 
 
