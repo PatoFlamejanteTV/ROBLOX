@@ -2,11 +2,22 @@
 
 This is a version of Roblox from 2016 with its source code fixed. The base used is from git.rip, from https://git.rip/exconfidential/roblox/roblox.
 
+[![Dependabot Updates](https://github.com/PatoFlamejanteTV/ROBLOX/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/PatoFlamejanteTV/ROBLOX/actions/workflows/dependabot/dependabot-updates)
+[![CodeQL](https://github.com/PatoFlamejanteTV/ROBLOX/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/PatoFlamejanteTV/ROBLOX/actions/workflows/github-code-scanning/codeql)
+
+[![Star History Chart](https://api.star-history.com/svg?repos=PatoFlamejanteTV/ROBLOX&type=Date)](https://star-history.com/#bytebase/star-history&Date)
+
+
+## Warning(s)
+
+### From now, im going to accept pull requests to fixes/PRs
+### In case building dont work/Theres any error with images (.png, .svg, etc.), make an `Issue` and i will revert `[ImgBot] Optimize images`
+
 ## Build
 
 You will need the following to compile, for Windows:
 - Visual Studio 2019
-- Visual Studio 2015 build tools (v140_xp)
+- Visual Studio 2015 build tools (v141_xp(?), i updated it to v141 as an test, idk if still works)
 
 ### Boost
 1. Run `bootstrap.bat` in `Library/boost/`. Edit the paths in `build_boost.bat` to correspond to where you are keeping this repository, and run `build_boost.bat`

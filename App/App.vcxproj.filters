@@ -1673,18 +1673,6 @@
     <ClCompile Include="util\URL.cpp">
       <Filter>Source Files\Util Source</Filter>
     </ClCompile>
-    <ClCompile Include="$(CONTRIB_PATH)\w3c-libwww-5.4.0\Library\src\HTParse.c">
-      <Filter>Source Files\libwww</Filter>
-    </ClCompile>
-    <ClCompile Include="$(CONTRIB_PATH)\w3c-libwww-5.4.0\Library\src\HTMemory.c">
-      <Filter>Source Files\libwww</Filter>
-    </ClCompile>
-    <ClCompile Include="$(CONTRIB_PATH)\w3c-libwww-5.4.0\Library\src\HTString.c">
-      <Filter>Source Files\libwww</Filter>
-    </ClCompile>
-    <ClCompile Include="$(CONTRIB_PATH)\w3c-libwww-5.4.0\Library\src\HTList.c">
-      <Filter>Source Files\libwww</Filter>
-    </ClCompile>
     <ClCompile Include="script\LuaVM.cpp">
       <Filter>Source Files\Script Source</Filter>
     </ClCompile>
@@ -1786,6 +1774,18 @@
     </ClCompile>
     <ClCompile Include="v8datamodel\Attachment.cpp">
       <Filter>Source Files\V8DataModel Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Library\w3c-libwww\Library\src\HTList.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Library\w3c-libwww\Library\src\HTMemory.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Library\w3c-libwww\Library\src\HTParse.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Library\w3c-libwww\Library\src\HTString.c">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3553,18 +3553,6 @@
     <ClInclude Include="include\util\NamedMutex.h">
       <Filter>Header Files\Util Header</Filter>
     </ClInclude>
-    <ClInclude Include="$(CONTRIB_PATH)\w3c-libwww-5.4.0\Library\src\HTParse.h">
-      <Filter>Source Files\libwww</Filter>
-    </ClInclude>
-    <ClInclude Include="$(CONTRIB_PATH)\w3c-libwww-5.4.0\Library\src\HTMemory.h">
-      <Filter>Source Files\libwww</Filter>
-    </ClInclude>
-    <ClInclude Include="$(CONTRIB_PATH)\w3c-libwww-5.4.0\Library\src\HTString.h">
-      <Filter>Source Files\libwww</Filter>
-    </ClInclude>
-    <ClInclude Include="$(CONTRIB_PATH)\w3c-libwww-5.4.0\Library\src\HTList.h">
-      <Filter>Source Files\libwww</Filter>
-    </ClInclude>
     <ClInclude Include="include\util\HTW3C.h">
       <Filter>Header Files\Util Header</Filter>
     </ClInclude>
@@ -3672,6 +3660,18 @@
     </ClInclude>
     <ClInclude Include="include\v8datamodel\Attachment.h">
       <Filter>Header Files\V8DataModel Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Library\w3c-libwww\Library\src\HTList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Library\w3c-libwww\Library\src\HTMemory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Library\w3c-libwww\Library\src\HTParse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Library\w3c-libwww\Library\src\HTString.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

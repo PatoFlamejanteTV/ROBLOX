@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ServiceModel;
-using System.Text;
 using System.Diagnostics;
+using System.ServiceModel;
 
 namespace Roblox.RccServiceArbiter
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple)]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(Namespace = "http://roblox.com/", ConfigurationName = "RCCServiceSoap")]
-    [System.ServiceModel.XmlSerializerFormat(Style=OperationFormatStyle.Document, Use=OperationFormatUse.Literal)]
+    [System.ServiceModel.XmlSerializerFormat(Style = OperationFormatStyle.Document, Use = OperationFormatUse.Literal)]
     class RccService : Roblox.Grid.Rcc.Server.RCCServiceSoap
     {
         private JobManager jobManager;
@@ -215,14 +214,14 @@ namespace Roblox.RccServiceArbiter
             {
                 try
                 {
-                    OpenJobEx(job, script); 
+                    OpenJobEx(job, script);
                 }
                 catch (Exception ex)
                 {
                     ExceptionHandler.LogException(ex);
                 }
             });
-            return null; 
+            return null;
         }
 
         [System.ServiceModel.OperationContractAttribute(Action = "http://roblox.com/OpenJobEx", ReplyAction = "*")]
@@ -298,11 +297,11 @@ namespace Roblox.RccServiceArbiter
             {
                 try
                 {
-                    RenewLeaseSync(jobID, expirationInSeconds);                    
+                    RenewLeaseSync(jobID, expirationInSeconds);
                 }
                 catch (Exception ex)
                 {
-                    ExceptionHandler.LogException(ex);                        
+                    ExceptionHandler.LogException(ex);
                 }
             });
             return 0;
@@ -318,7 +317,7 @@ namespace Roblox.RccServiceArbiter
                 {
                     result = rccService.RenewLease(jobID, expirationInSeconds);
                 }
-                Log.Event(String.Format("RenewLease('{0}', {1}) - Success", jobID, expirationInSeconds));                
+                Log.Event(String.Format("RenewLease('{0}', {1}) - Success", jobID, expirationInSeconds));
             }
             catch (Exception e)
             {
@@ -333,7 +332,7 @@ namespace Roblox.RccServiceArbiter
         {
             throw new Exception("Execute is deprecated, use ExecuteEx");
         }
-       
+
         [System.ServiceModel.OperationContractAttribute(Action = "http://roblox.com/ExecuteEx", ReplyAction = "*")]
         [System.ServiceModel.XmlSerializerFormatAttribute()]
         public override Roblox.Grid.Rcc.Server.LuaValue[] ExecuteEx(string jobID, Roblox.Grid.Rcc.Server.ScriptExecution script)
@@ -372,9 +371,9 @@ namespace Roblox.RccServiceArbiter
                 {
                     ExceptionHandler.LogException(ex);
                 }
-            });            
+            });
         }
-        
+
         public void CloseJobSync(string jobID)
         {
             try
@@ -421,7 +420,7 @@ namespace Roblox.RccServiceArbiter
         public override Roblox.Grid.Rcc.Server.LuaValue[] DiagEx(int type, string jobID)
         {
 
-            if (Properties.Settings.Default.Verbose) Console.WriteLine("Diag(" +    type + "," + jobID + ")");
+            if (Properties.Settings.Default.Verbose) Console.WriteLine("Diag(" + type + "," + jobID + ")");
             if (jobID != "")
             {
                 using (Roblox.Grid.Rcc.RCCServiceSoap rccService = jobManager.GetJob(jobID, "DiagEx", ""))
@@ -449,7 +448,7 @@ namespace Roblox.RccServiceArbiter
             //Pick version from 1
             result.version = GetVersion();
 
-            jobManager.DispatchRequest(delegate(Roblox.Grid.Rcc.RCCServiceSoap rccService)
+            jobManager.DispatchRequest(delegate (Roblox.Grid.Rcc.RCCServiceSoap rccService)
                 {
                     //Call GetStatus on all dependent processes
                     Roblox.Grid.Rcc.Status status = rccService.GetStatus();
@@ -478,14 +477,14 @@ namespace Roblox.RccServiceArbiter
             if (Properties.Settings.Default.Verbose) Console.WriteLine("GetAllJobs()");
             System.Collections.Generic.List<Roblox.Grid.Rcc.Server.Job> result = new List<Roblox.Grid.Rcc.Server.Job>();
 
-            jobManager.DispatchRequest(delegate(Roblox.Grid.Rcc.RCCServiceSoap rccService)
+            jobManager.DispatchRequest(delegate (Roblox.Grid.Rcc.RCCServiceSoap rccService)
             {
                 Roblox.Grid.Rcc.Job[] jobs = rccService.GetAllJobs();
                 foreach (Roblox.Grid.Rcc.Job job in jobs)
                     result.Add(convert(job));
             });
             return result.ToArray();
-    }
+        }
 
         [System.ServiceModel.OperationContractAttribute(Action = "http://roblox.com/CloseExpiredJobs", ReplyAction = "*")]
         [System.ServiceModel.XmlSerializerFormatAttribute()]
@@ -494,7 +493,7 @@ namespace Roblox.RccServiceArbiter
             if (Properties.Settings.Default.Verbose) Console.WriteLine("CloseExpiredJobs()");
             int result = 0;
             //Forward to all processes
-            jobManager.DispatchRequest(delegate(Roblox.Grid.Rcc.RCCServiceSoap rccService)
+            jobManager.DispatchRequest(delegate (Roblox.Grid.Rcc.RCCServiceSoap rccService)
                 {
                     result += rccService.CloseExpiredJobs();
                 });
@@ -509,13 +508,13 @@ namespace Roblox.RccServiceArbiter
             if (Properties.Settings.Default.Verbose) Console.WriteLine("CloseAllJobs()");
             int result = 0;
             //Forward to all processes
-            jobManager.DispatchRequest(delegate(Roblox.Grid.Rcc.RCCServiceSoap rccService)
+            jobManager.DispatchRequest(delegate (Roblox.Grid.Rcc.RCCServiceSoap rccService)
                 {
                     result += rccService.CloseAllJobs();
                 });
 
             return result;
-        }        
+        }
         #endregion
     }
 }
