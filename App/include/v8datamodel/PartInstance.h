@@ -3,6 +3,19 @@
 #pragma once
 
 #include "V8DataModel/PVInstance.h"
+
+// Magic number constants
+static const float ADORN_BOX_SIZE = 0.40f;
+static const float ADORN_SPHERE_RADIUS = 0.4f;
+static const float ADORN_CYLINDER_RADIUS = 0.125f;
+static const float ADORN_CYLINDER_HEIGHT = 0.25f;
+static const float ADORN_SPHERE_RADIUS_LARGE = 0.5f;
+static const float ADORN_RAY_LENGTH = 2.0f;
+static const float ADORN_SPHERE_RADIUS_SMALL = 0.2f;
+static const float SELECTION_BOX_INFLATION = 0.02f;
+static const float TRANSPARENCY_THRESHOLD = 0.1f;
+static const float HIT_TEST_MAX_DISTANCE = 1.0f;
+static const float PROJECTILE_VELOCITY_THRESHOLD = 25.0f;
 #include "V8DataModel/Surface.h"
 #include "util/PartMaterial.h"
 #include "V8World/Primitive.h"
@@ -624,6 +637,23 @@ private:
 
 	static float	defaultFriction()			{return 0.3f;}
 	static float	defaultElasticity()			{return 0.5f;}
+
+private:
+	// Helper functions for render3dAdorn
+	void renderSurfaceAdornments(Adorn* adorn);
+	void renderSleepHighlight(Adorn* adorn);
+	void renderAwakeHighlight(Adorn* adorn);
+	void renderBodyType(Adorn* adorn);
+	void renderPartCoordinateFrame(Adorn* adorn);
+	void renderAnchoredHighlight(Adorn* adorn);
+	void renderUnalignedHighlight(Adorn* adorn);
+	void renderSpanningTree(Adorn* adorn);
+	void renderContactPoints(Adorn* adorn);
+	void renderJointCoordinates(Adorn* adorn);
+	void renderPhysicsOwners(Adorn* adorn);
+	void renderInterpolationPath(Adorn* adorn);
+	void renderAssemblies(Adorn* adorn);
+	void renderMechanisms(Adorn* adorn);
 };
 
 } // namespace
