@@ -62,7 +62,6 @@ LOGGROUP(PartInstanceLifetime)
 DYNAMIC_FASTFLAG(HumanoidCookieRecursive)
 
 //Deprecate FormFactor
-DYNAMIC_FASTFLAGVARIABLE(FormFactorDeprecated,false)
 DYNAMIC_FASTFLAGVARIABLE(FixShapeChangeBug, false)
 
 DYNAMIC_FASTFLAGVARIABLE(FixFallenPartsNotDeleted, false)
@@ -217,7 +216,6 @@ bool StringConverter<PartMaterial>::convertToValue(const std::string& text, Part
 }
 
 static BoundFuncDesc<PartInstance, void()> desc_unjoin(&PartInstance::destroyJoints, "BreakJoints", Security::None);
-static BoundFuncDesc<PartInstance, void()> dep_breakJoints(&PartInstance::destroyJoints, "breakJoints", Security::None, Reflection::Descriptor::Attributes::deprecated(desc_unjoin));
 static BoundFuncDesc<PartInstance, void()> desc_join(&PartInstance::join, "MakeJoints", Security::None);
 static BoundFuncDesc<PartInstance, void()> desc_joinOld(&PartInstance::join, "makeJoints", Security::None);
 static CustomBoundFuncDesc<PartInstance, float()> desc_getMass(&PartInstance::getMassScript, "GetMass", Security::None);
@@ -246,7 +244,6 @@ const PropDescriptor<PartInstance, PhysicalProperties> PartInstance::prop_Custom
 // color, transparency, reflectance, anchored, canCollide, locked
 const PropDescriptor<PartInstance, Color3> PartInstance::prop_Color("Color", category_Appearance, &PartInstance::getColor3, &PartInstance::setColor3, PropertyDescriptor::Functionality(PropertyDescriptor::UI));
 const PropDescriptor<PartInstance, BrickColor> PartInstance::prop_BrickColor("BrickColor", category_Appearance, &PartInstance::getColor, &PartInstance::setColor);
-const PropDescriptor<PartInstance, BrickColor> prop_BrickColorDep("brickColor", category_Appearance, &PartInstance::getColor, &PartInstance::setColor, PropertyDescriptor::Attributes::deprecated(PartInstance::prop_BrickColor));
 const EnumPropDescriptor<PartInstance, PartMaterial> PartInstance::prop_renderMaterial("Material", category_Appearance, &PartInstance::getRenderMaterial, &PartInstance::setRenderMaterial);
 const PropDescriptor<PartInstance, float> PartInstance::prop_Transparency("Transparency", category_Appearance, &PartInstance::getTransparencyXml, &PartInstance::setTransparency);
 // DFFlagNetworkOwnershipRuleReplicates
@@ -264,7 +261,6 @@ const PropDescriptor<PartInstance, bool> PartInstance::prop_CanCollide("CanColli
 const PropDescriptor<PartInstance, Faces> prop_ResizeableFaces("ResizeableFaces", category_Behavior, &PartInstance::getResizeHandleMask, NULL, PropertyDescriptor::UI);
 const PropDescriptor<PartInstance, int>  prop_ResizeIncrement("ResizeIncrement", category_Behavior, &PartInstance::getResizeIncrement, NULL, PropertyDescriptor::UI);
 const BoundFuncDesc<PartInstance, bool(NormalId, int)> desc_resize(&PartInstance::resize, "Resize", "normalId", "deltaAmount", Security::None);
-const BoundFuncDesc<PartInstance, bool(NormalId, int)> desc_dep_resize(&PartInstance::resize, "resize", "normalId", "deltaAmount", Security::None, Descriptor::Attributes::deprecated(desc_resize));
 
 const BoundFuncDesc<PartInstance, shared_ptr<const Instances>()> func_getTouchingParts(&PartInstance::getTouchingParts, "GetTouchingParts", Security::None);
 
@@ -296,17 +292,7 @@ EventDesc<PartInstance,
 EventDesc<PartInstance, 
 	void(shared_ptr<Instance>), 
 	PartInstance::TouchedSignal,
-	PartInstance::TouchedSignal* (PartInstance::*)(bool)> dep_Touched(&PartInstance::getOrCreateTouchedSignal, "touched", "otherPart", Reflection::Descriptor::Attributes::deprecated(event_Touched));
-
-EventDesc<PartInstance, 
-	void(shared_ptr<Instance>), 
-	PartInstance::TouchedSignal,
 	PartInstance::TouchedSignal* (PartInstance::*)(bool)> event_TouchEnded(&PartInstance::getOrCreateTouchedEndedSignal, "TouchEnded", "otherPart");
-
-EventDesc<PartInstance, 
-	void(shared_ptr<Instance>), 
-	rbx::signal<void(shared_ptr<Instance>)>,
-	rbx::signal<void(shared_ptr<Instance>)>* (PartInstance::*)(bool)> dep_StoppedTouching(&PartInstance::getOrCreateDeprecatedStoppedTouchingSignal, "StoppedTouching", "otherPart", Reflection::Descriptor::Attributes::deprecated(event_TouchEnded));
 
 EventDesc<PartInstance, 
 	void(), 
@@ -375,6 +361,9 @@ PartInstance::OnDemandPartInstance::OnDemandPartInstance(PartInstance* owner)
 	touchEndedSignal.part = owner;
 }
 
+// Returns the specific gravity of a given material.
+// These values are based on real-world material densities.
+// http://www.simetric.co.uk/si_materials.htm
 static float toSpecificGravity(PartMaterial material)
 {
 	// http://www.simetric.co.uk/si_materials.htm
@@ -418,6 +407,9 @@ static float toSpecificGravity(PartMaterial material)
 
 static const char* partName("Part");
 
+// PartInstance constructor
+// Initializes a new PartInstance with a given size.
+// Sets up the primitive, initializes properties, and sets default surface types.
 PartInstance::PartInstance(const Vector3& initialSize)
 	: DescribedNonCreatable<PartInstance, PVInstance, sPart>(partName)
 	, raknetTime(0)
@@ -474,6 +466,7 @@ bool PartInstance::networkOwnerTimeUp() const
 }
 
 // Super Hack - any PartInstance named "Torso" tries to be the assembly root - somewhat consistent with the humanoid code
+// Sets the name of the part and adjusts the size multiplier for special cases like "HumanoidRootPart" and "Torso".
 void PartInstance::setName(const std::string& value)
 {
 	Super::setName(value);
@@ -516,6 +509,8 @@ CoordinateFrame PartInstance::worldSnapLocation() const
 }
 
 
+// Determines if the part is aligned to the grid.
+// This is used for visual feedback in Studio.
 bool PartInstance::aligned(bool useGlobalGridSetting) const
 {
 	CoordinateFrame myCoord = worldSnapLocation();
@@ -671,55 +666,14 @@ bool PartInstance::instanceOrChildrenContainsNewCustomPhysics(RBX::Instance* ins
 
 Vector3 PartInstance::xmlToUiSize(const Vector3& xmlSize) const
 {
-	Vector3 uiSize = xmlSize;
-
-	if (!DFFlag::FormFactorDeprecated) {
-		switch (getFormFactor())
-		{
-		case BRICK:
-			uiSize.y = xmlSize.y / brickHeight();
-			break;
-		case PLATE:
-			uiSize.y = xmlSize.y / plateHeight();	//   /= 0.4;
-			break;
-		default:
-			break;
-		}
-	}
-	return uiSize;
+	return xmlSize;
 }
 
 Vector3 PartInstance::uiToXmlSize(const Vector3& uiSize) const
 {
 	// >= minimium size (default 1.0) (no longer require int on all sides)
-	Vector3 gridUiSize, newRbxSize;
-
-	if (!DFFlag::FormFactorDeprecated) {
-		switch (getFormFactor())
-		{
-		case BRICK:
-			gridUiSize = Math::iRoundVector3(uiSize.max(getMinimumUiSize()));
-			newRbxSize = gridUiSize;
-			newRbxSize.y = gridUiSize.y * brickHeight();
-			break;
-		case PLATE:
-			gridUiSize = Math::iRoundVector3(uiSize.max(getMinimumUiSize()));
-			newRbxSize = gridUiSize;
-			newRbxSize.y = gridUiSize.y * plateHeight();
-			break;
-		case SYMETRIC:
-			newRbxSize = Math::iRoundVector3(uiSize.max(getMinimumUiSize()));
-			break;
-		case CUSTOM:
-		default:
-			newRbxSize = uiSize.max(getMinimumUiSizeCustom());
-			break;
-		}
-	} else {
-		newRbxSize = uiSize.max(getMinimumUiSizeCustom());
-	}
-
-
+	Vector3 newRbxSize;
+	newRbxSize = uiSize.max(getMinimumUiSizeCustom());
 	return newRbxSize;
 }
 
@@ -727,13 +681,13 @@ Vector3 PartInstance::uiToXmlSize(const Vector3& uiSize) const
 void PartInstance::onCameraNear(float distance)
 {
 	if (distance < cameraTransparentDistance()) {
-		setLocalTransparencyModifier(1.0);
+		setLocalTransparencyModifier(1.0f);
 	}
 	else if (distance < cameraTranslucentDistance()) {
-		setLocalTransparencyModifier(0.5);
+		setLocalTransparencyModifier(0.5f);
 	}
 	else {
-		setLocalTransparencyModifier(0.0);
+		setLocalTransparencyModifier(0.0f);
 	}
 }
 
@@ -878,9 +832,12 @@ bool PartInstance::computeSurfacesNeedAdorn() const
 Part PartInstance::getPart()
 {
 	Vector6<SurfaceType> surf6;
-	for (int i = 0; i < 6; i++) {
-		surf6[i] = getSurfaceType(NormalId(i));
-	}
+	surf6[0] = getSurfaceType(NORM_X);
+	surf6[1] = getSurfaceType(NORM_Y);
+	surf6[2] = getSurfaceType(NORM_Z);
+	surf6[3] = getSurfaceType(NORM_X_NEG);
+	surf6[4] = getSurfaceType(NORM_Y_NEG);
+	surf6[5] = getSurfaceType(NORM_Z_NEG);
 
 	return Part(
 		getPartType(),
@@ -1015,6 +972,8 @@ bool PartInstance::shouldRender3dAdorn() const
 }
 
 
+// Renders 3D adornments for the part, such as selection boxes and debug visualizations.
+// This function dispatches to helper functions to render specific adornments.
 void PartInstance::render3dAdorn(Adorn* adorn) 
 {
 	if(getTransparencyUi() >= 1.0f)
@@ -1023,245 +982,20 @@ void PartInstance::render3dAdorn(Adorn* adorn)
     if (getPartPrimitive()->getWorld() == NULL)
         return;
 
-	if (computeSurfacesNeedAdorn()) {
-		Draw::partAdorn(
-			getPart(), 
-			adorn, 
-			Color3::gray()
-		);
-	}
-
-	if (PartInstance::highlightSleepParts && getPartPrimitive()->getAssembly())
-	{
-		Sim::AssemblyState sleepStatus = getPartPrimitive()->getAssembly()->getAssemblyState();
-		if (	(sleepStatus != Sim::ANCHORED) 
-			&&	(sleepStatus != Sim::AWAKE))
-		{
-			Color3 sleepColor;
-			switch (sleepStatus)
-			{
-				case Sim::RECURSIVE_WAKE_PENDING:	sleepColor = Color3::purple();	break;
-				case Sim::WAKE_PENDING:				sleepColor = Color3::purple();	break;
-				case Sim::SLEEPING_CHECKING:		sleepColor = Color3::orange();	break;
-				case Sim::SLEEPING_DEEPLY:			sleepColor = Color3::yellow();	break;
-				default: RBXASSERT(0);	break;
-			}
-			Draw::selectionBox(
-				getPart(),
-				adorn,
-				sleepColor);
-		}
-	}
-
-	if (PartInstance::highlightAwakeParts && getPartPrimitive()->getAssembly())
-	{	
-		Sim::AssemblyState sleepStatus = getPartPrimitive()->getAssembly()->getAssemblyState();
-		if (	(sleepStatus != Sim::ANCHORED)
-			&&	(sleepStatus != Sim::SLEEPING_DEEPLY)	) 
-		{
-			Color3 wakeColor;
-			switch (sleepStatus)
-			{
-				case Sim::AWAKE:					wakeColor = Color3::red();	break;
-				case Sim::SLEEPING_CHECKING:		wakeColor = Color3::orange();	break;
-				case Sim::RECURSIVE_WAKE_PENDING:	wakeColor = Color3::purple();		break;
-				case Sim::WAKE_PENDING:				wakeColor = Color3::purple();		break;
-				default: RBXASSERT(0);	break;
-			}
-			Draw::selectionBox(
-				getPart(),
-				adorn,
-				wakeColor);
-		}
-	}
-
-	if (PartInstance::showBodyTypes)
-	{	
-		Body* body = getPartPrimitive()->getBody();
-		Workspace* workspace = Workspace::getWorkspaceIfInWorkspace(this);
-		World* world = workspace ? workspace->getWorld() : NULL;
-
-		if ( body && world  )
-		{
-			SimBody* simBody = body->getRootSimBody();
-			if (simBody->isInKernel())
-			{
-				if ( simBody->isFreeFallBody() )
-					Draw::selectionBox(	getPart(), adorn, Color3::green());
-				else if ( simBody->isRealTimeBody() )
-					Draw::selectionBox(	getPart(), adorn, Color3::red());
-				else if ( simBody->isJointBody() )
-					Draw::selectionBox(	getPart(), adorn, Color3::blue());
-				else {
-					RBXASSERT( simBody->isContactBody() );
-					if (simBody->isSymmetricContact())
-					{
-						if (simBody->isVerticalContact())
-							Draw::selectionBox(	getPart(), adorn, Color3::brown());
-						else
-							Draw::selectionBox(	getPart(), adorn, Color3::orange());
-					}
-					else
-						Draw::selectionBox(	getPart(), adorn, Color3::yellow());
-				}
-			}
-		}
-	}
-
-
-	if (PartInstance::showPartCoordinateFrames) {
-		renderCoordinateFrame(adorn);
-	}
-
-	if (PartInstance::showAnchoredParts && getAnchored()) {
-		DrawAdorn::partSurface(
-			getPart(),
-			Math::getClosestObjectNormalId(Vector3(0, -1, 0), getCoordinateFrame().rotation),
-			adorn,
-			G3D::Color4(Color3::gray(), alpha()));
-	}
-
-	if (PartInstance::showUnalignedParts && !aligned()) {
-		Draw::selectionBox(
-			getPart(),
-			adorn,
-			Color3::yellow());
-	}
-
-	if (PartInstance::showSpanningTree) {
-		if (getPartPrimitive()->getMechanism())
-		{
-			if (Mechanism::isMechanismRootPrimitive(getPartPrimitive()))
-			{
-				adorn->setObjectToWorldMatrix(getCoordinateFrame().translation);
-				Vector3 boxSize(Vector3::one() * 0.40);
-				bool primitiveAnchoredInEngine = Assembly::computeIsGroundingPrimitive(getPartPrimitive());
-
-				adorn->box(		AABox(-boxSize, boxSize),
-								(primitiveAnchoredInEngine ? Color3::red() : Color3::orange())	
-							);
-			}
-			else if (Mechanism::getRootMovingPrimitive(getPartPrimitive())==getPartPrimitive())
-			{
-				adorn->setObjectToWorldMatrix(getCoordinateFrame().translation);
-				Vector3 boxSize(Vector3::one() * 0.40);
-				adorn->box(		AABox(-boxSize, boxSize),
-					(Color3::blue())	
-					);
-			}
-			else if (Assembly::isAssemblyRootPrimitive(getPartPrimitive()))
-			{	
-				adorn->setObjectToWorldMatrix(getCoordinateFrame().translation);
-				adorn->sphere(	Sphere(Vector3::zero(), 0.4), Color3::yellow() * .8f );
-			}
-			else if (Clump::isClumpRootPrimitive(getPartPrimitive()))
-			{
-				adorn->setObjectToWorldMatrix(getCoordinateFrame().translation);
-				adorn->cylinderAlongX(0.125f, 0.25f, Color3::orange());
-			}
-		}
-	}
-	if (PartInstance::showContactPoints) {
-		  for (int i = 0; i < getPartPrimitive()->getNumContacts(); ++i) {
-			  Contact* c = getPartPrimitive()->getContact(i);
-			  for (int j = 0; j < c->numConnectors(); ++j) {
-				  Vector3 loc, normal;
-				  float length;
-				  ContactConnector* connector = c->getConnector(j);
-				  if (!connector->isInKernel())
-					  continue;
-				  Color3 color = Color3::white();
-				  if (connector->isSecondPass())
-					  color = Color3::red();
-				  else if (connector->isRealTime())
-					  color = Color3::orange();
-				  else if (connector->isJoint())
-					  color = Color3::blue();
-				  else if (connector->isContact())
-				  {
-					  color = Color3::yellow();
-					  if (connector->isRestingContact())
-						  color *= 0.5;
-				  }
-
-				  connector->getLengthNormalPosition(loc, normal, length);
-				  if (length < 0.0f) {
-					  adorn->setObjectToWorldMatrix(CoordinateFrame(loc));
-					  adorn->ray( RbxRay::fromOriginAndDirection(Vector3::zero(), normal * length * -4.0f), color * .8f );
-					  adorn->sphere(	Sphere(Vector3::zero(), 0.5), color * .8f );
-				  }
-			  }
-		  }
-	}
-
-    if (PartInstance::showJointCoordinates) {
-
-        // Helpful visualization function: shows the center of mass
-        adorn->setObjectToWorldMatrix(getCoordinateFrame().pointToWorldSpace(getPartPrimitive()->getGeometry()->getCofmOffset()));
-        adorn->sphere(Sphere(Vector3::zero(), 0.2), Color3::orange() * .8f );
-
-        adorn->setObjectToWorldMatrix(getCoordinateFrame());
-        adorn->ray( RbxRay::fromOriginAndDirection( Vector3::zero(), Vector3::unitX() * 2.0f ), Color3::red() * .5f );
-        adorn->ray( RbxRay::fromOriginAndDirection( Vector3::zero(), Vector3::unitY() * 2.0f ), Color3::green() * .5f );
-        adorn->ray( RbxRay::fromOriginAndDirection( Vector3::zero(), Vector3::unitZ() * 2.0f ), Color3::blue() * .5f );
-
-        for (int i = 0; i < getPartPrimitive()->getNumJoints(); ++i) {
-            Primitive* primitive = getPartPrimitive();
-            Joint* joint = primitive->getJoint(i);
-            if (!Joint::isSpringJoint(joint))
-                continue;
-            for (int j = 0; j < 2; ++j) {
-                adorn->setObjectToWorldMatrix(joint->getJointWorldCoord(j));
-                adorn->ray( RbxRay::fromOriginAndDirection( Vector3::zero(), Vector3::unitX() * 2.0f ), Color3::red() * .5f );
-                adorn->ray( RbxRay::fromOriginAndDirection( Vector3::zero(), Vector3::unitY() * 2.0f ), Color3::green() * .5f );
-                adorn->ray( RbxRay::fromOriginAndDirection( Vector3::zero(), Vector3::unitZ() * 2.0f ), Color3::blue() * .5f );
-            }
-        }
-    }
-
-	if (Workspace::showEPhysicsOwners) {
-		if (this->getPartPrimitive()->getAssembly()) {
-			if (Primitive* movingRoot = Mechanism::getRootMovingPrimitive(this->getPartPrimitive())) {
-				const RBX::SystemAddress& systemAddress = PartInstance::fromPrimitive(movingRoot)->getNetworkOwner();
-				Color3 color = RBX::Network::NetworkOwner::colorFromAddress(systemAddress);
-				
-				Assembly* a = movingRoot->getAssembly();
-                World* world = getPartPrimitive()->getWorld();
-				if (!world->getSpatialFilter()->addressMatch(a))
-					if (a->getFilterPhase() == Assembly::Sim_BufferZone)
-						color = Color::red();
-
-				Draw::selectionBox(
-					getPart(),
-					adorn,
-					color
-					);
-			}
-		}
-	}
-
-	if (PartInstance::showInterpolationPath)
-	{
-		if (renderingCoordinateFrame)
-			renderingCoordinateFrame->renderPath(adorn);
-	}
-
-    if (PartInstance::showAssemblies) {
-		if (Assembly* a = this->getPartPrimitive()->getAssembly()) {
-			Draw::selectionBox(
-				getPart(),
-				adorn,
-				RBX::Color::colorFromPointer(a));
-		}
-	}
-    if (PartInstance::showMechanisms) {
-		if (Mechanism* m = this->getPartPrimitive()->getMechanism()) {
-			Draw::selectionBox(
-				getPart(),
-				adorn,
-				RBX::Color::colorFromPointer(m));
-		}
-	}
+	renderSurfaceAdornments(adorn);
+	renderSleepHighlight(adorn);
+	renderAwakeHighlight(adorn);
+	renderBodyType(adorn);
+	renderPartCoordinateFrame(adorn);
+	renderAnchoredHighlight(adorn);
+	renderUnalignedHighlight(adorn);
+	renderSpanningTree(adorn);
+	renderContactPoints(adorn);
+	renderJointCoordinates(adorn);
+	renderPhysicsOwners(adorn);
+	renderInterpolationPath(adorn);
+	renderAssemblies(adorn);
+	renderMechanisms(adorn);
 }
 
 void PartInstance::render3dSelect(Adorn* adorn, SelectState selectState) 
@@ -1270,7 +1004,7 @@ void PartInstance::render3dSelect(Adorn* adorn, SelectState selectState)
 		getPart(),
 		adorn,
 		selectState,
-		0.02f);
+		SELECTION_BOX_INFLATION);
 }
 
 
@@ -1283,7 +1017,7 @@ bool PartInstance::hitTestImpl(const RBX::RbxRay& worldRay, Vector3& worldHitPoi
 
 	Vector3 hitPointInPartCoords;
 
-	bool answer = HitTest::hitTest(getPart(), rayInPartCoords, hitPointInPartCoords, 1.0);
+	bool answer = HitTest::hitTest(getPart(), rayInPartCoords, hitPointInPartCoords, HIT_TEST_MAX_DISTANCE);
 
 	if (answer)
 	{
@@ -1525,9 +1259,10 @@ bool PartInstance::computeNetworkOwnerIsSomeoneElse() const
 }
 
 // A bunch of heuristic rules to categorize a part as projectile
+// This is used to determine if a part should be treated as a projectile for networking purposes.
 bool PartInstance::isProjectile() const
 {
-	if (getLinearVelocity().squaredMagnitude() < 25.0 * 25.0)		// slow objects are not projectiles
+	if (getLinearVelocity().squaredMagnitude() < PROJECTILE_VELOCITY_THRESHOLD * PROJECTILE_VELOCITY_THRESHOLD)		// slow objects are not projectiles
 		return false;
 	
 	const Primitive* p = getConstPartPrimitive();
@@ -2853,10 +2588,6 @@ bool PartInstance::resizeImpl(NormalId localNormalId, int amount)
 			deltaSizeUi[localNormalId % 3] = (float)amount;
 		}
 		else {
-			if (!DFFlag::FormFactorDeprecated) 
-			{
-				RBXASSERT(getFormFactor() == PartInstance::SYMETRIC);
-			}
 			deltaSizeUi = amount * Vector3(1,1,1);
 		}  
 
@@ -2894,35 +2625,6 @@ bool PartInstance::advResizeImpl(NormalId localNormalId, float amount, bool chec
 		return false;
 	}
 	else {
-		// Set the form factor to CUSTOM if resizing a part off the 1 stud grid (or 1.2 or 0.4 stud grid in the y-direction)
-		if(!DFFlag::FormFactorDeprecated && getFormFactor() != PartInstance::CUSTOM)
-		{
-			float fractPart, intPart, resizeIncrement;
-			switch(getFormFactor())
-			{
-				case PartInstance::BRICK:
-                    resizeIncrement = (localNormalId == NORM_Y || localNormalId == NORM_Y_NEG) ? 1.2f : 1.0f;
-					break;
-				case PartInstance::PLATE:
-					resizeIncrement = (localNormalId == NORM_Y || localNormalId == NORM_Y_NEG) ? 0.4f : 1.0f;
-					break;
-				case PartInstance::SYMETRIC:
-				default:
-					resizeIncrement = 1.0f;
-					break;
-			}
-
-			fractPart = modff (fabs(amount)/resizeIncrement, &intPart);
-			if(fractPart > 0.0001f)
-			{
-				BasicPartInstance* aBPI = this->fastDynamicCast<BasicPartInstance>();
-				if(aBPI)
-				{
-					//aBPI->setFormFactorUi(PartInstance::CUSTOM);
-				}
-			}
-		}
-
 		Vector3 originalSizeXml = getPartSizeXml();
 		CoordinateFrame originalPosition = getCoordinateFrame();
 
@@ -2974,36 +2676,12 @@ bool PartInstance::advResizeImpl(NormalId localNormalId, float amount, bool chec
 
 float PartInstance::getMinimumYDimension(void) const
 {
-	if (DFFlag::FormFactorDeprecated) {
-		return 0.2f;
-	} else {
-		switch (getFormFactor())
-		{
-		case BRICK:
-			return 1.2f;
-		case PLATE:
-			return 0.4f;
-		case CUSTOM:
-			return 0.2f;
-		default:
-			return 1.0f;
-		}
-	}
+	return 0.2f;
 }
 
 float PartInstance::getMinimumXOrZDimension(void) const
 {
-	if (DFFlag::FormFactorDeprecated) {
-		return 0.2f;
-	} else {
-		switch (getFormFactor())
-		{
-		case CUSTOM:
-			return 0.2f;
-		default:
-			return 1.0f;
-		}
-	}
+	return 0.2f;
 }
 
 
@@ -3301,3 +2979,271 @@ bool PartInstance::getIsCurrentlyStreamRemovingPart() const {
 
 } // namespace
 
+void RBX::PartInstance::renderSurfaceAdornments(Adorn* adorn) {
+	if (computeSurfacesNeedAdorn()) {
+		Draw::partAdorn(
+			getPart(),
+			adorn,
+			Color3::gray()
+		);
+	}
+}
+
+void RBX::PartInstance::renderSleepHighlight(Adorn* adorn) {
+	if (PartInstance::highlightSleepParts && getPartPrimitive()->getAssembly())
+	{
+		Sim::AssemblyState sleepStatus = getPartPrimitive()->getAssembly()->getAssemblyState();
+		if (	(sleepStatus != Sim::ANCHORED)
+			&&	(sleepStatus != Sim::AWAKE))
+		{
+			Color3 sleepColor;
+			switch (sleepStatus)
+			{
+				case Sim::RECURSIVE_WAKE_PENDING:	sleepColor = Color3::purple();	break;
+				case Sim::WAKE_PENDING:				sleepColor = Color3::purple();	break;
+				case Sim::SLEEPING_CHECKING:		sleepColor = Color3::orange();	break;
+				case Sim::SLEEPING_DEEPLY:			sleepColor = Color3::yellow();	break;
+				default: RBXASSERT(0);	break;
+			}
+			Draw::selectionBox(
+				getPart(),
+				adorn,
+				sleepColor);
+		}
+	}
+}
+
+void RBX::PartInstance::renderAwakeHighlight(Adorn* adorn) {
+	if (PartInstance::highlightAwakeParts && getPartPrimitive()->getAssembly())
+	{
+		Sim::AssemblyState sleepStatus = getPartPrimitive()->getAssembly()->getAssemblyState();
+		if (	(sleepStatus != Sim::ANCHORED)
+			&&	(sleepStatus != Sim::SLEEPING_DEEPLY)	)
+		{
+			Color3 wakeColor;
+			switch (sleepStatus)
+			{
+				case Sim::AWAKE:					wakeColor = Color3::red();	break;
+				case Sim::SLEEPING_CHECKING:		wakeColor = Color3::orange();	break;
+				case Sim::RECURSIVE_WAKE_PENDING:	wakeColor = Color3::purple();		break;
+				case Sim::WAKE_PENDING:				wakeColor = Color3::purple();		break;
+				default: RBXASSERT(0);	break;
+			}
+			Draw::selectionBox(
+				getPart(),
+				adorn,
+				wakeColor);
+		}
+	}
+}
+
+void RBX::PartInstance::renderBodyType(Adorn* adorn) {
+	if (PartInstance::showBodyTypes)
+	{
+		Body* body = getPartPrimitive()->getBody();
+		Workspace* workspace = Workspace::getWorkspaceIfInWorkspace(this);
+		World* world = workspace ? workspace->getWorld() : NULL;
+
+		if ( body && world  )
+		{
+			SimBody* simBody = body->getRootSimBody();
+			if (simBody->isInKernel())
+			{
+				if ( simBody->isFreeFallBody() )
+					Draw::selectionBox(	getPart(), adorn, Color3::green());
+				else if ( simBody->isRealTimeBody() )
+					Draw::selectionBox(	getPart(), adorn, Color3::red());
+				else if ( simBody->isJointBody() )
+					Draw::selectionBox(	getPart(), adorn, Color3::blue());
+				else {
+					RBXASSERT( simBody->isContactBody() );
+					if (simBody->isSymmetricContact())
+					{
+						if (simBody->isVerticalContact())
+							Draw::selectionBox(	getPart(), adorn, Color3::brown());
+						else
+							Draw::selectionBox(	getPart(), adorn, Color3::orange());
+					}
+					else
+						Draw::selectionBox(	getPart(), adorn, Color3::yellow());
+				}
+			}
+		}
+	}
+}
+
+void RBX::PartInstance::renderPartCoordinateFrame(Adorn* adorn) {
+	if (PartInstance::showPartCoordinateFrames) {
+		renderCoordinateFrame(adorn);
+	}
+}
+
+void RBX::PartInstance::renderAnchoredHighlight(Adorn* adorn) {
+	if (PartInstance::showAnchoredParts && getAnchored()) {
+		DrawAdorn::partSurface(
+			getPart(),
+			Math::getClosestObjectNormalId(Vector3(0, -1, 0), getCoordinateFrame().rotation),
+			adorn,
+			G3D::Color4(Color3::gray(), alpha()));
+	}
+}
+
+void RBX::PartInstance::renderUnalignedHighlight(Adorn* adorn) {
+	if (PartInstance::showUnalignedParts && !aligned()) {
+		Draw::selectionBox(
+			getPart(),
+			adorn,
+			Color3::yellow());
+	}
+}
+
+void RBX::PartInstance::renderSpanningTree(Adorn* adorn) {
+	if (PartInstance::showSpanningTree) {
+		if (getPartPrimitive()->getMechanism())
+		{
+			if (Mechanism::isMechanismRootPrimitive(getPartPrimitive()))
+			{
+				adorn->setObjectToWorldMatrix(getCoordinateFrame().translation);
+				Vector3 boxSize(Vector3::one() * ADORN_BOX_SIZE);
+				bool primitiveAnchoredInEngine = Assembly::computeIsGroundingPrimitive(getPartPrimitive());
+
+				adorn->box(		AABox(-boxSize, boxSize),
+								(primitiveAnchoredInEngine ? Color3::red() : Color3::orange())
+							);
+			}
+			else if (Mechanism::getRootMovingPrimitive(getPartPrimitive())==getPartPrimitive())
+			{
+				adorn->setObjectToWorldMatrix(getCoordinateFrame().translation);
+				Vector3 boxSize(Vector3::one() * ADORN_BOX_SIZE);
+				adorn->box(		AABox(-boxSize, boxSize),
+					(Color3::blue())
+					);
+			}
+			else if (Assembly::isAssemblyRootPrimitive(getPartPrimitive()))
+			{
+				adorn->setObjectToWorldMatrix(getCoordinateFrame().translation);
+				adorn->sphere(	Sphere(Vector3::zero(), ADORN_SPHERE_RADIUS), Color3::yellow() * .8f );
+			}
+			else if (Clump::isClumpRootPrimitive(getPartPrimitive()))
+			{
+				adorn->setObjectToWorldMatrix(getCoordinateFrame().translation);
+				adorn->cylinderAlongX(ADORN_CYLINDER_RADIUS, ADORN_CYLINDER_HEIGHT, Color3::orange());
+			}
+		}
+	}
+}
+
+void RBX::PartInstance::renderContactPoints(Adorn* adorn) {
+	if (PartInstance::showContactPoints) {
+		  for (int i = 0; i < getPartPrimitive()->getNumContacts(); ++i) {
+			  Contact* c = getPartPrimitive()->getContact(i);
+			  for (int j = 0; j < c->numConnectors(); ++j) {
+				  Vector3 loc, normal;
+				  float length;
+				  ContactConnector* connector = c->getConnector(j);
+				  if (!connector->isInKernel())
+					  continue;
+				  Color3 color = Color3::white();
+				  if (connector->isSecondPass())
+					  color = Color3::red();
+				  else if (connector->isRealTime())
+					  color = Color3::orange();
+				  else if (connector->isJoint())
+					  color = Color3::blue();
+				  else if (connector->isContact())
+				  {
+					  color = Color3::yellow();
+					  if (connector->isRestingContact())
+						  color *= 0.5;
+				  }
+
+				  connector->getLengthNormalPosition(loc, normal, length);
+				  if (length < 0.0f) {
+					  adorn->setObjectToWorldMatrix(CoordinateFrame(loc));
+					  adorn->ray( RbxRay::fromOriginAndDirection(Vector3::zero(), normal * length * -4.0f), color * .8f );
+					  adorn->sphere(	Sphere(Vector3::zero(), ADORN_SPHERE_RADIUS_LARGE), color * .8f );
+				  }
+			  }
+		  }
+	}
+}
+
+void RBX::PartInstance::renderJointCoordinates(Adorn* adorn) {
+    if (PartInstance::showJointCoordinates) {
+
+        // Helpful visualization function: shows the center of mass
+        adorn->setObjectToWorldMatrix(getCoordinateFrame().pointToWorldSpace(getPartPrimitive()->getGeometry()->getCofmOffset()));
+        adorn->sphere(Sphere(Vector3::zero(), ADORN_SPHERE_RADIUS_SMALL), Color3::orange() * .8f );
+
+        adorn->setObjectToWorldMatrix(getCoordinateFrame());
+        adorn->ray( RbxRay::fromOriginAndDirection( Vector3::zero(), Vector3::unitX() * ADORN_RAY_LENGTH ), Color3::red() * .5f );
+        adorn->ray( RbxRay::fromOriginAndDirection( Vector3::zero(), Vector3::unitY() * ADORN_RAY_LENGTH ), Color3::green() * .5f );
+        adorn->ray( RbxRay::fromOriginAndDirection( Vector3::zero(), Vector3::unitZ() * ADORN_RAY_LENGTH ), Color3::blue() * .5f );
+
+        for (int i = 0; i < getPartPrimitive()->getNumJoints(); ++i) {
+            Primitive* primitive = getPartPrimitive();
+            Joint* joint = primitive->getJoint(i);
+            if (!Joint::isSpringJoint(joint))
+                continue;
+            for (int j = 0; j < 2; ++j) {
+                adorn->setObjectToWorldMatrix(joint->getJointWorldCoord(j));
+                adorn->ray( RbxRay::fromOriginAndDirection( Vector3::zero(), Vector3::unitX() * ADORN_RAY_LENGTH ), Color3::red() * .5f );
+                adorn->ray( RbxRay::fromOriginAndDirection( Vector3::zero(), Vector3::unitY() * ADORN_RAY_LENGTH ), Color3::green() * .5f );
+                adorn->ray( RbxRay::fromOriginAndDirection( Vector3::zero(), Vector3::unitZ() * ADORN_RAY_LENGTH ), Color3::blue() * .5f );
+            }
+        }
+    }
+}
+
+void RBX::PartInstance::renderPhysicsOwners(Adorn* adorn) {
+	if (Workspace::showEPhysicsOwners) {
+		if (this->getPartPrimitive()->getAssembly()) {
+			if (Primitive* movingRoot = Mechanism::getRootMovingPrimitive(this->getPartPrimitive())) {
+				const RBX::SystemAddress& systemAddress = PartInstance::fromPrimitive(movingRoot)->getNetworkOwner();
+				Color3 color = RBX::Network::NetworkOwner::colorFromAddress(systemAddress);
+
+				Assembly* a = movingRoot->getAssembly();
+                World* world = getPartPrimitive()->getWorld();
+				if (!world->getSpatialFilter()->addressMatch(a))
+					if (a->getFilterPhase() == Assembly::Sim_BufferZone)
+						color = Color::red();
+
+				Draw::selectionBox(
+					getPart(),
+					adorn,
+					color
+					);
+			}
+		}
+	}
+}
+
+void RBX::PartInstance::renderInterpolationPath(Adorn* adorn) {
+	if (PartInstance::showInterpolationPath)
+	{
+		if (renderingCoordinateFrame)
+			renderingCoordinateFrame->renderPath(adorn);
+	}
+}
+
+void RBX::PartInstance::renderAssemblies(Adorn* adorn) {
+    if (PartInstance::showAssemblies) {
+		if (Assembly* a = this->getPartPrimitive()->getAssembly()) {
+			Draw::selectionBox(
+				getPart(),
+				adorn,
+				RBX::Color::colorFromPointer(a));
+		}
+	}
+}
+
+void RBX::PartInstance::renderMechanisms(Adorn* adorn) {
+    if (PartInstance::showMechanisms) {
+		if (Mechanism* m = this->getPartPrimitive()->getMechanism()) {
+			Draw::selectionBox(
+				getPart(),
+				adorn,
+				RBX::Color::colorFromPointer(m));
+		}
+	}
+}
