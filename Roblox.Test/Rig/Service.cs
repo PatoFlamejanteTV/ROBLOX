@@ -119,24 +119,58 @@ namespace Roblox.Test
 
         public string SpawnProcess(string filename, string args, out int pid)
         {
+            // Define a whitelist of allowed executable filenames (full path or basenames)
+            string[] allowedFilenames = new string[]
+            {
+                "cmd.exe",
+                "notepad.exe",
+                "RobloxPlayer.exe"
+                // add further allowed executables here
+            };
+
+            // Optionally, define allowed argument patterns or handle args validation here
+            // For demonstration, we'll only allow empty args or a hardcoded set as safe
+            string[] allowedArgs = new string[]
+            {
+                "",
+                "/safe",
+                "/readonly"
+                // further allowed arguments
+            };
+
+            // Validate filename is allowed (case-insensitive)
+            bool filenameAllowed = allowedFilenames.Any(f => 
+                string.Equals(f, filename, StringComparison.OrdinalIgnoreCase)
+            );
+
+            // Validate arguments
+            bool argsAllowed = allowedArgs.Any(a => string.Equals(a, args, StringComparison.OrdinalIgnoreCase));
+
             string result = "OK";
             pid = 0;
             StringWriter sw = new StringWriter();
             try
             {
+                if (!filenameAllowed)
+                {
+                    throw new ArgumentException("Requested executable is not permitted.");
+                }
+                if (!argsAllowed)
+                {
+                    throw new ArgumentException("Requested arguments are not permitted.");
+                }
                 Console.Write(DateTime.Now + " Spawning " + filename + " " + args + "...");
                 sw.Write(DateTime.Now.ToString() + "\t" + Environment.MachineName + "\t" + "Spawning " + filename + " " + args + "..." + "\t");
 
                 Process proc = new Process();
                 proc.StartInfo.FileName = filename;
                 proc.StartInfo.Arguments = args;
-
+    
                 proc.Start();
 
                 pid = proc.Id;
 
                 Program.RegisterProcess(proc);
-
 
                 sw.Flush();
                 result = sw.ToString();
