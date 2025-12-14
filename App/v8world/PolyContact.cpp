@@ -119,7 +119,6 @@ float PolyContact::worstFeatureOverlap()
 	return worstOverlap;
 }
 
-// TODO - turn optimizer back on here after fixed
 void PolyContact::matchClosestFeatures(ConnectorArray& newConnectors)
 {
 	for (size_t i = 0; i < newConnectors.size(); ++i) {

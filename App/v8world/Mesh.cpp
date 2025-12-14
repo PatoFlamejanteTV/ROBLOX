@@ -988,8 +988,6 @@ Face::Face( size_t id, std::vector<Edge*>& edgeList )
 		edges.push_back(edgeList[i]);
 }
 
-// TODO _ turn back on after identifying bug here
-#pragma optimize( "", off )
 	bool Face::pointInFaceBorders(const Vector3& point) const
 	{
 		for (size_t i = 0; i < numEdges(); ++i) {
@@ -1001,7 +999,6 @@ Face::Face( size_t id, std::vector<Edge*>& edgeList )
 		}
 		return true;
 	}
-#pragma optimize( "", on )
 
 
 

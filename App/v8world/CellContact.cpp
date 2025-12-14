@@ -116,7 +116,6 @@ float CellMeshContact::worstFeatureOverlap()
 	return worstOverlap;
 }
 
-// TODO - turn optimizer back on here after fixed
 void CellMeshContact::matchClosestFeatures(ConnectorArray& newConnectors)
 {
 	for (size_t i = 0; i < newConnectors.size(); ++i) {
