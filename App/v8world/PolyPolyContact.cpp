@@ -370,9 +370,6 @@ bool FaceFacePair::loadVertices(FixedArray<VertexStatus, CONTACT_ARRAY_SIZE>* ve
 	return false;
 }
 
-// TODO - Turn on optimize after fixed
-#pragma optimize( "", off )
-
 		//bool FaceFacePair::testVerticesInside(size_t faceId, FixedArray<VertexStatus, 8>& vertexStatus, 
 		bool FaceFacePair::testVerticesInside(size_t faceId, FixedArray<VertexStatus, CONTACT_ARRAY_SIZE>& vertexStatus, 
 											  const CoordinateFrame& vertexInFace,
@@ -416,8 +413,6 @@ bool FaceFacePair::loadVertices(FixedArray<VertexStatus, CONTACT_ARRAY_SIZE>* ve
 				else		{return ABOVE_OUTSIDE;}
 			}
 		}
-
-#pragma optimize( "", off )
 
 // TODO - turn optimizer back on here after fixed
 void FaceFacePair::checkTwoSideIntersections(const Vertex* v0, const Vertex* v1, const CoordinateFrame& otherInMe, ConnectorArray& newConnectors)
