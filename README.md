@@ -187,7 +187,7 @@ This is a complete and comprehensive list of all the major changes made to the o
 	- [ ] 64-bit support
 	- [ ] Compile as VC++ 2019
 	- [x] Uncap friction
-	- [ ] Lua 5.3 (or, port over the Lua 5.3 utf8 library)
+	- [x] Lua 5.3 (or, port over the Lua 5.3 utf8 library) (Ported over the utf8 library)
 	- [ ] Unlock TextureTrail
 	- [x] Uncap PlayerGui:SetTopbarTransparency
 	- [ ] Mesh format version 3.00 support
